@@ -170,9 +170,10 @@ the model's knowledge may not reflect the latest changes.
 
 - **Aksh Juneja:** problem research, architecture, backend/API integration
   (LLM explainer route, prompt design), core UI, deployment, and this report.
-- **Shruti Agnihotri:** provider/API-key toggle feature (frontend), allowing
-  the explainer to run against either Anthropic or OpenAI with an optional
-  user-supplied key.
+- **Shruti Agnihotri:** provider/API-key toggle feature (frontend) — added a
+  provider dropdown (Anthropic/OpenAI) and an optional API-key input to the
+  explainer UI, wired through to the existing `/api/explain` route so the
+  explainer can run against either provider with a user-supplied key.
 
 Individual commits are visible in the GitHub history at the repository link
 above.

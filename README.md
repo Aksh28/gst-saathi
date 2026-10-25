@@ -23,6 +23,9 @@ language, what was filed on their behalf and what it means for their money.
   and what's worth double-checking with their accountant.
 - It explains. It does **not** audit, verify, or certify anything, and it
   never claims a filing or an accountant is right or wrong.
+- A provider/API-key toggle lets the explainer run against either Anthropic
+  or OpenAI, with an optional user-supplied key sent directly with the
+  request (never stored or logged).
 
 ## What this version deliberately does not do (v2 — future)
 

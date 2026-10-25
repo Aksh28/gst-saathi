@@ -70,11 +70,18 @@ differential tax along with applicable interest within 15 days of this notice.`,
   },
 ];
 
+const PROVIDERS = [
+  { id: "anthropic", label: "Anthropic (Claude)" },
+  { id: "openai", label: "OpenAI (GPT)" },
+] as const;
+
 export default function Home() {
   const [text, setText] = useState("");
   const [explanation, setExplanation] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [provider, setProvider] = useState<(typeof PROVIDERS)[number]["id"]>("anthropic");
+  const [apiKey, setApiKey] = useState("");
 
   async function handleExplain() {
     setError(null);
@@ -84,7 +91,7 @@ export default function Home() {
       const res = await fetch("/api/explain", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ text, provider, apiKey: apiKey.trim() || undefined }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -111,6 +118,35 @@ export default function Home() {
             explanation of what it means for your business.
           </p>
         </header>
+
+        <section className="flex flex-col gap-2 rounded-lg border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
+          <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            AI provider
+          </span>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <select
+              value={provider}
+              onChange={(e) => setProvider(e.target.value as (typeof PROVIDERS)[number]["id"])}
+              className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+            >
+              {PROVIDERS.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.label}
+                </option>
+              ))}
+            </select>
+            <input
+              type="password"
+              value={apiKey}
+              onChange={(e) => setApiKey(e.target.value)}
+              placeholder="Optional: use your own API key instead of the server's"
+              className="flex-1 rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+            />
+          </div>
+          <p className="text-xs text-zinc-500 dark:text-zinc-500">
+            Your key is sent directly with the request and is never stored or logged.
+          </p>
+        </section>
 
         <div className="rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-200">
           This is an educational tool using sample data. It explains filings in
